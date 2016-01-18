@@ -1,4 +1,11 @@
-# Created by .ignore support plugin (hsz.mobi)
+
 aws.properties
 images-worker.iml
 .idea
+
+*.class
+*.jar
+*.war
+*.ear
+
+
