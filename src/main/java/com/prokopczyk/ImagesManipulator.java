@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -55,6 +56,7 @@ public class ImagesManipulator {
 
 
             CompletableFuture<Object> objectCompletableFuture = CompletableFuture.anyOf(features);
+
             objectCompletableFuture.thenAccept(e -> {
                 BufferedImage image = (BufferedImage) e;
                 // convert BufferedImage to byte array
@@ -76,8 +78,13 @@ public class ImagesManipulator {
 
             });
 
+            objectCompletableFuture.get();
 
         } catch (IOException e) {
+            Throwables.propagate(e);
+        } catch (InterruptedException e) {
+            Throwables.propagate(e);
+        } catch (ExecutionException e) {
             Throwables.propagate(e);
         }
 
@@ -85,7 +92,7 @@ public class ImagesManipulator {
 
     private BufferedImage generateScaledImage(byte[] bytes, BufferedImage bImageFromConvert) {
         BufferedImage buffImg = null;
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 1000000; i++) {
             Image img = null;
             try {
                 img = ImageIO.read(new ByteArrayInputStream(bytes)).getScaledInstance(300, 300, BufferedImage.SCALE_SMOOTH);
