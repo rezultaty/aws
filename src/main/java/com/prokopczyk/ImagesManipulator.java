@@ -92,7 +92,7 @@ public class ImagesManipulator {
 
     private BufferedImage generateScaledImage(byte[] bytes, BufferedImage bImageFromConvert) {
         BufferedImage buffImg = null;
-        for (int i = 0; i < 1000000; i++) {
+        for (int i = 0; i < 10000; i++) {
             Image img = null;
             try {
                 img = ImageIO.read(new ByteArrayInputStream(bytes)).getScaledInstance(300, 300, BufferedImage.SCALE_SMOOTH);
