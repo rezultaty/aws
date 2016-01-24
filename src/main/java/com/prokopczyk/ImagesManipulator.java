@@ -18,8 +18,6 @@ import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 /**
  * Created by andrzej on 15.01.2016.
@@ -39,7 +37,7 @@ public class ImagesManipulator {
     public void processImage(String imageName) {
 
 
-        S3Object object = amazonS3Client.getObject(bucketName, DIRECTORY + imageName);
+        S3Object object = amazonS3Client.getObject(bucketName, imageName);
         try {
             byte[] bytes = IOUtils.toByteArray(object.getObjectContent());
 
@@ -73,7 +71,7 @@ public class ImagesManipulator {
                 InputStream str = new ByteArrayInputStream(buf);
                 ObjectMetadata metadata = new ObjectMetadata();
                 metadata.setContentLength(buf.length);
-                amazonS3Client.putObject(bucketName, DIRECTORY + LocalDateTime.now() + ".jpg", str, metadata);
+                amazonS3Client.putObject(bucketName, imageName.substring(0,imageName.length()-3)+ LocalDateTime.now() + ".jpg", str, metadata);
 
 
             });
